@@ -1,18 +1,48 @@
 version: 2.1
+
 orbs:
   node: circleci/node@1.1.6
+
+defaults: &defaults
+  working_directory: ~/keycap
+  executor:
+    name: node/default
+
 jobs:
   test:
-    executor:
-      name: node/default
+    <<: *defaults
     steps:
       - checkout
       - node/with-cache:
           steps:
             - run: yarn install
-            - run: yarn lint
-            - run: yarn test
+      - run: yarn lint
+      - run: yarn test
+      - persist_to_workspace:
+          root: ~/keycap
+          paths: .
+
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/keycap
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+      - run:
+          name: Publish package
+          command: yarn publish
+
 workflows:
-    test:
-      jobs:
-        - test
+  test-deploy:
+    jobs:
+      - test
+      - deploy:
+          requires:
+            - test
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/

@@ -5,10 +5,12 @@ import {
   unregisterCallback,
 } from './common';
 
-export function useKeyCap(callback: KeyboardCallback): void {
+const useKeyCap = (callback: KeyboardCallback): void => {
   useEffect(() => {
     registerCallback();
 
     return (): void => unregisterCallback();
   });
-}
+};
+
+export { useKeyCap };

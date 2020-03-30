@@ -1,2 +1,2 @@
-export { useKeyCap } from './hooks';
-export { withKeyCap } from './decorators';
+export * from './hooks';
+export * from './decorators';

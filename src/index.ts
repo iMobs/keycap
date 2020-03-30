@@ -1,2 +1,2 @@
 export { useKeyCap } from './hooks';
-export { withKeyCap } from './decorator';
+export { withKeyCap } from './decorators';

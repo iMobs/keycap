@@ -1,5 +1,5 @@
 import { withKeyCap } from '../src/decorators';
 
-describe(withKeyCap, () => {
+describe('withKeyCap', () => {
   it.todo('tests stuff');
 });

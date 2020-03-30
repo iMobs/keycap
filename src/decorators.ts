@@ -1,7 +1,7 @@
-export const withKeyCap = (...keyCodes: string[]): void => {
+export function withKeyCap(...keyCodes: string[]): void {
   if (!keyCodes.length) {
     return;
   }
 
   return;
-};
+}

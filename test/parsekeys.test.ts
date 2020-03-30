@@ -1,3 +1,4 @@
+import { EmptyKeyError, InvalidKeyError } from '../src/errors';
 import { parseKeys } from '../src/parseKeys';
 
 describe(parseKeys, () => {
@@ -21,6 +22,18 @@ describe(parseKeys, () => {
         expect(parseKeys('ctrl+shift+a')).toEqual([
           { key: 'a', modifiers: ['ctrl', 'shift'] },
         ]);
+      });
+    });
+
+    describe('when input is empty', () => {
+      it('throws an EmptyKeyError', () => {
+        expect(() => parseKeys('')).toThrow(EmptyKeyError);
+      });
+    });
+
+    describe('when key is not valid', () => {
+      it('throws an InvalidKeyError', () => {
+        expect(() => parseKeys('~')).toThrow(InvalidKeyError);
       });
     });
   });

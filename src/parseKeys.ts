@@ -1,3 +1,5 @@
+import { EmptyKeyError, InvalidKeyError } from './errors';
+
 export type KeySet = {
   key: string;
   modifiers?: string[];
@@ -8,17 +10,23 @@ export function parseKeys(keys: string | string[]): KeySet[] {
     keys = [keys];
   }
 
-  return keys.map((key) => {
-    key = key.toLowerCase().trim();
+  return keys.map((keyString) => {
+    const matches = keyString
+      .toLowerCase()
+      .trim()
+      .split(/\s?\+\s?/);
 
-    const keySet: KeySet = {
-      key,
-    };
+    const key = matches.pop();
 
-    const matches = key.split(/\s?\+\s?/);
+    if (!key) {
+      throw new EmptyKeyError();
+    } else if (!key.match(/^[a-z0-9]$/)) {
+      throw new InvalidKeyError(keyString);
+    }
 
-    if (matches.length > 1) {
-      keySet.key = matches.pop()!;
+    const keySet: KeySet = { key };
+
+    if (matches.length) {
       keySet.modifiers = matches.sort();
     }
 

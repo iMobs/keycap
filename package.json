@@ -7,12 +7,18 @@
   "author": "Ian Mobley <ianmobley@gmail.com>",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
   "devDependencies": {
     "@types/node": "^13.9.5",
     "@types/react": "^16.9.27",
     "@typescript-eslint/eslint-plugin": "^2.25.0",
     "@typescript-eslint/parser": "^2.25.0",
     "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.2",
     "husky": "^4.2.3",
     "jest": "^25.2.4",
     "lint-staged": "^10.0.10",
@@ -20,5 +26,16 @@
     "react": "^16.13.1",
     "ts-jest": "^25.2.1",
     "typescript": "^3.8.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": "eslint --fix"
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }

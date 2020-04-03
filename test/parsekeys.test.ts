@@ -33,7 +33,7 @@ describe(parseKeys, () => {
 
     describe('when key is not valid', () => {
       it('throws an InvalidKeyError', () => {
-        expect(() => parseKeys('~')).toThrow(InvalidKeyError);
+        expect(() => parseKeys('abc')).toThrow(InvalidKeyError);
       });
     });
   });

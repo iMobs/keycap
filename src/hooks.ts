@@ -1,15 +1,11 @@
 import { useEffect } from 'react';
-import {
-  KeyboardCallback,
-  registerCallback,
-  unregisterCallback,
-} from './common';
+import { Options, registerCallback, unregisterCallback } from './common';
 
-const useKeyCap = (callback: KeyboardCallback): void => {
+const useKeyCap = (options: Options): void => {
   useEffect(() => {
-    registerCallback();
+    registerCallback(options);
 
-    return (): void => unregisterCallback();
+    return (): void => unregisterCallback(options.callback);
   });
 };
 

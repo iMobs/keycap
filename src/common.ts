@@ -1,36 +1,38 @@
 export type KeyboardCallback = (e: KeyboardEvent) => void;
 
-type KeyMap = Map<KeyboardCallback, string[]>;
-
-const keyMap: KeyMap = new Map();
-
 export type Options = {
+  instance?: object;
   callback: KeyboardCallback;
   keys: string[];
 };
 
+type InstanceMap = Map<object | KeyboardCallback, Options>;
+
+const instanceMap: InstanceMap = new Map();
+
 let registered = false;
 
-function keydownListener(this: Document, e: KeyboardEvent): void {
-  keyMap.forEach((keys, callback) => {
-    callback.call(this, e);
+function keydownListener(e: KeyboardEvent): void {
+  instanceMap.forEach(({ instance, callback }) => {
+    callback.call(instance, e);
   });
 }
 
-export const registerCallback = ({ callback, keys }: Options): void => {
-  keyMap.set(callback, keys);
+export function registerCallback(options: Options): void {
+  const { instance, callback } = options;
+  instanceMap.set(instance ?? callback, options);
 
   if (!registered) {
     document.addEventListener('keydown', keydownListener);
     registered = true;
   }
-};
+}
 
-export const unregisterCallback = (callback: KeyboardCallback): void => {
-  keyMap.delete(callback);
+export function unregisterCallback({ instance, callback }: Options): void {
+  instanceMap.delete(instance ?? callback);
 
-  if (!keyMap.size) {
+  if (!instanceMap.size) {
     document.removeEventListener('keydown', keydownListener);
     registered = false;
   }
-};
+}

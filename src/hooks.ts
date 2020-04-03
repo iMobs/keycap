@@ -5,7 +5,7 @@ const useKeyCap = (options: Options): void => {
   useEffect(() => {
     registerCallback(options);
 
-    return (): void => unregisterCallback(options.callback);
+    return (): void => unregisterCallback(options);
   });
 };
 

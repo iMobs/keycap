@@ -8,7 +8,6 @@ describe(useKeyCap, () => {
     renderHook(() => useKeyCap({ callback, keys: ['a'] }));
     const event = new KeyboardEvent('keydown');
     document.dispatchEvent(event);
-    expect(callback).toHaveBeenCalled();
     expect(callback).toHaveBeenCalledWith(event);
   });
 

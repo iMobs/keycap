@@ -3,7 +3,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { useKeyCap } from '../src/hooks';
 
 describe(useKeyCap, () => {
-  test('should register event listener', () => {
+  it('should register event listener', () => {
     const callback = jest.fn();
     renderHook(() => useKeyCap({ callback, keys: ['a'] }));
     const event = new KeyboardEvent('keydown');

@@ -5,7 +5,9 @@ import { keyCap } from '../src/decorators';
 describe(keyCap, () => {
   class TestClass extends Component<{ testString?: string }> {
     @keyCap([])
-    testMethod(event: KeyboardEvent): void {}
+    testMethod(event: KeyboardEvent): void {
+      // TODO
+    }
   }
 
   it.skip('todo', () => {

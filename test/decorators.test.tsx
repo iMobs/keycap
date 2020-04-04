@@ -1,6 +1,16 @@
 import { render } from '@testing-library/react';
 import React, { Component } from 'react';
+import { registerCallback, unregisterCallback } from '../src/common';
 import { keyCap } from '../src/decorators';
+
+jest.mock('../src/common');
+
+const registerCallbackMock = registerCallback as jest.Mock<
+  typeof registerCallback
+>;
+const unregisterCallbackMock = unregisterCallback as jest.Mock<
+  typeof registerCallback
+>;
 
 describe(keyCap, () => {
   type TestProps = {
@@ -8,6 +18,7 @@ describe(keyCap, () => {
     onUnmount?: Function;
     onKeyCap?: Function;
   };
+
   class TestClass extends Component<TestProps> {
     componentDidMount(): void {
       this.props.onMount?.();
@@ -27,21 +38,33 @@ describe(keyCap, () => {
     }
   }
 
-  it('should register event listener', () => {
-    const onKeyCap = jest.fn();
-    render(<TestClass onKeyCap={onKeyCap} />);
-    const event = new KeyboardEvent('keydown');
-    document.dispatchEvent(event);
-    expect(onKeyCap).toHaveBeenCalledWith(event);
+  beforeEach(() => {
+    registerCallbackMock.mockClear();
+    unregisterCallbackMock.mockClear();
   });
 
-  it('should unregister the event listener on unmount', () => {
-    const onKeyCap = jest.fn();
-    const { unmount } = render(<TestClass onKeyCap={onKeyCap} />);
-    unmount();
-    const event = new KeyboardEvent('keydown');
-    document.dispatchEvent(event);
-    expect(onKeyCap).not.toHaveBeenCalled();
+  describe('event listeners', () => {
+    it('should register event listener', () => {
+      render(<TestClass />);
+
+      expect(registerCallbackMock).toHaveBeenCalledWith({
+        instance: expect.any(TestClass),
+        callback: TestClass.prototype.testMethod,
+        keys: ['a'],
+      });
+
+      expect(unregisterCallbackMock).not.toHaveBeenCalled();
+    });
+
+    it('should unregister the event listener on unmount', () => {
+      const { unmount } = render(<TestClass />);
+      unmount();
+      expect(unregisterCallbackMock).toHaveBeenCalledWith({
+        instance: expect.any(TestClass),
+        callback: TestClass.prototype.testMethod,
+        keys: ['a'],
+      });
+    });
   });
 
   it('does not override mount/unmount lifecycle methods', () => {

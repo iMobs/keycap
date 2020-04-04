@@ -1,30 +1,63 @@
 import { renderHook } from '@testing-library/react-hooks';
-
+import { registerCallback, unregisterCallback } from '../src/common';
 import { useKeyCap } from '../src/hooks';
 
+jest.mock('../src/common');
+
+const registerCallbackMock = registerCallback as jest.Mock<
+  typeof registerCallback
+>;
+const unregisterCallbackMock = unregisterCallback as jest.Mock<
+  typeof registerCallback
+>;
+
 describe(useKeyCap, () => {
+  beforeEach(() => {
+    registerCallbackMock.mockClear();
+    unregisterCallbackMock.mockClear();
+  });
+
   it('should register event listener', () => {
     const callback = jest.fn();
-    renderHook(() => useKeyCap({ callback, keys: ['a'] }));
-    const event = new KeyboardEvent('keydown');
-    document.dispatchEvent(event);
-    expect(callback).toHaveBeenCalledWith(event);
+    const keys = ['a'];
+    renderHook(() => useKeyCap({ callback, keys }));
+    expect(registerCallbackMock).toHaveBeenCalledWith({
+      instance: undefined,
+      callback,
+      keys,
+    });
   });
 
   it('should unregister the event listener on unmount', () => {
-    const cb = jest.fn();
+    const cb1 = jest.fn();
+    const keys = ['a'];
     const { rerender } = renderHook(
-      ({ callback }) => useKeyCap({ callback, keys: ['a'] }),
+      ({ callback }) => useKeyCap({ callback, keys }),
       {
-        initialProps: { callback: cb },
+        initialProps: { callback: cb1 },
       }
     );
 
-    // Render with a new callback ref
-    rerender({ callback: jest.fn() });
+    expect(registerCallbackMock).toHaveBeenCalledWith({
+      instance: undefined,
+      callback: cb1,
+      keys,
+    });
 
-    const event = new KeyboardEvent('keydown');
-    document.dispatchEvent(event);
-    expect(cb).not.toHaveBeenCalled();
+    // Render with a new callback ref
+    const cb2 = jest.fn();
+    rerender({ callback: cb2 });
+
+    expect(unregisterCallbackMock).toHaveBeenCalledWith({
+      instance: undefined,
+      callback: cb1,
+      keys,
+    });
+
+    expect(registerCallbackMock).toHaveBeenCalledWith({
+      instance: undefined,
+      callback: cb2,
+      keys,
+    });
   });
 });

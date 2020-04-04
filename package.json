@@ -55,6 +55,7 @@
     "singleQuote": true
   },
   "jest": {
+    "collectCoverage": true,
     "preset": "ts-jest",
     "testEnvironment": "jsdom"
   }

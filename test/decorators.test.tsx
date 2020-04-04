@@ -8,9 +8,13 @@ describe(keyCap, () => {
     testMethod(event: KeyboardEvent): void {
       // TODO
     }
+
+    render(): null {
+      return null;
+    }
   }
 
-  it.skip('todo', () => {
+  it('todo', () => {
     render(<TestClass />);
   });
 });

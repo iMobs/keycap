@@ -44,6 +44,8 @@ describe(useKeyCap, () => {
       keys,
     });
 
+    expect(unregisterCallbackMock).not.toHaveBeenCalled();
+
     // Render with a new callback ref
     const cb2 = jest.fn();
     rerender({ callback: cb2 });

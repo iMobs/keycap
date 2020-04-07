@@ -30,8 +30,9 @@ jobs:
           path: reports/junit
       - store_artifacts:
           path: reports
-      - store_artifacts:
-          path: coverage
+      - run:
+          name: "Upload coverage"
+          command: bash <(curl -s https://codecov.io/bash)
       # - persist_to_workspace:
       #     root: ~/keycap
       #     paths: .

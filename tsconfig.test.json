@@ -1,0 +1,7 @@
+{
+  "extends": ".",
+  "compilerOptions": {
+    "jsx": "react",
+    "experimentalDecorators": true
+  }
+}

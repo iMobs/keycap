@@ -12,7 +12,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.prod.json",
     "lint": "eslint src/** test/**",
     "test": "jest",
     "prepublishOnly": "yarn build"
@@ -58,6 +58,11 @@
   "jest": {
     "collectCoverage": true,
     "preset": "ts-jest",
-    "testEnvironment": "jsdom"
+    "testEnvironment": "jsdom",
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.test.json"
+      }
+    }
   }
 }

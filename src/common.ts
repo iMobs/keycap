@@ -18,6 +18,10 @@ function keydownListener(e: KeyboardEvent): void {
   });
 }
 
+export function isEmpty(): boolean {
+  return !instanceMap.size;
+}
+
 export function registerCallback(options: Options): void {
   const { instance, callback } = options;
   instanceMap.set(instance ?? callback, options);
@@ -31,7 +35,7 @@ export function registerCallback(options: Options): void {
 export function unregisterCallback({ instance, callback }: Options): void {
   instanceMap.delete(instance ?? callback);
 
-  if (!instanceMap.size) {
+  if (isEmpty()) {
     document.removeEventListener('keydown', keydownListener);
     registered = false;
   }

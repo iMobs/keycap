@@ -29,7 +29,7 @@ jobs:
           name: "TypeScript Check"
           command: yarn build --noEmit
       - store_test_results:
-          path: reports/junit
+          path: reports
       - store_artifacts:
           path: reports
       - run:

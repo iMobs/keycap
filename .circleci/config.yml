@@ -25,17 +25,19 @@ jobs:
             JEST_JUNIT_OUTPUT_DIR: reports
             JEST_JUNIT_OUTPUT_NAME: js-test-results.xml
           command: yarn test -i --ci --reporters="default" --reporters="jest-junit"
-      - run: yarn build --noEmit
+      - run:
+          name: "TypeScript Check"
+          command: yarn build --noEmit
       - store_test_results:
           path: reports/junit
       - store_artifacts:
           path: reports
       - run:
-          name: "Upload coverage"
-          command: bash <(curl -s https://codecov.io/bash)
-      # - persist_to_workspace:
-      #     root: ~/keycap
-      #     paths: .
+          name: "Uploading coverage"
+          command: yarn codecov
+      - persist_to_workspace:
+          root: ~/keycap
+          paths: .
 
   deploy:
     <<: *defaults
@@ -44,7 +46,7 @@ jobs:
           at: ~/keycap
       - run:
           name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/keycap/.npmrc
       - run:
           name: Publish package
           command: yarn publish
@@ -52,7 +54,10 @@ jobs:
 workflows:
   test-deploy:
     jobs:
-      - test
+      - test:
+          filters:
+            tags:
+              only: /.*/
       - deploy:
           requires:
             - test

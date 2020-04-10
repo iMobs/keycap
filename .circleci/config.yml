@@ -45,9 +45,6 @@ jobs:
       - attach_workspace:
           at: ~/keycap
       - run:
-          name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/keycap/.npmrc
-      - run:
           name: Publish package
           command: yarn publish
 

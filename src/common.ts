@@ -13,13 +13,17 @@ const instanceMap: InstanceMap = new Map();
 let registered = false;
 
 function keydownListener(e: KeyboardEvent): void {
-  instanceMap.forEach(({ instance, callback }) => {
-    callback.call(instance, e);
+  instanceMap.forEach(({ instance, callback, keys }) => {
+    if (keys.includes(e.key)) {
+      callback.call(instance, e);
+    }
   });
 }
 
-export function isEmpty(): boolean {
-  return !instanceMap.size;
+export function reset(): void {
+  instanceMap.clear();
+  registered = false;
+  document.removeEventListener('keydown', keydownListener);
 }
 
 export function registerCallback(options: Options): void {
@@ -35,7 +39,7 @@ export function registerCallback(options: Options): void {
 export function unregisterCallback({ instance, callback }: Options): void {
   instanceMap.delete(instance ?? callback);
 
-  if (isEmpty()) {
+  if (!instanceMap.size) {
     document.removeEventListener('keydown', keydownListener);
     registered = false;
   }

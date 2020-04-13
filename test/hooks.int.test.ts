@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { useKeyCap } from '../src/hooks';
+import { useKeyCap } from '../src';
 
 describe(useKeyCap, () => {
   it('calls a registered callback', () => {

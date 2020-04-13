@@ -5,13 +5,6 @@ import { keyCap } from '../src/decorators';
 
 jest.mock('../src/common');
 
-const registerCallbackMock = registerCallback as jest.Mock<
-  typeof registerCallback
->;
-const unregisterCallbackMock = unregisterCallback as jest.Mock<
-  typeof registerCallback
->;
-
 describe(keyCap, () => {
   type TestProps = {
     onMount?: Function;
@@ -38,28 +31,23 @@ describe(keyCap, () => {
     }
   }
 
-  beforeEach(() => {
-    registerCallbackMock.mockClear();
-    unregisterCallbackMock.mockClear();
-  });
-
   describe('event listeners', () => {
     it('should register event listener', () => {
       render(<TestClass />);
 
-      expect(registerCallbackMock).toHaveBeenCalledWith({
+      expect(registerCallback).toHaveBeenCalledWith({
         instance: expect.any(TestClass),
         callback: TestClass.prototype.testMethod,
         keys: ['a'],
       });
 
-      expect(unregisterCallbackMock).not.toHaveBeenCalled();
+      expect(unregisterCallback).not.toHaveBeenCalled();
     });
 
     it('should unregister the event listener on unmount', () => {
       const { unmount } = render(<TestClass />);
       unmount();
-      expect(unregisterCallbackMock).toHaveBeenCalledWith({
+      expect(unregisterCallback).toHaveBeenCalledWith({
         instance: expect.any(TestClass),
         callback: TestClass.prototype.testMethod,
         keys: ['a'],

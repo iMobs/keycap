@@ -58,6 +58,7 @@
   "jest": {
     "collectCoverage": true,
     "preset": "ts-jest",
+    "setupFilesAfterEnv": ["./test/setup.ts"],
     "testEnvironment": "jsdom",
     "globals": {
       "ts-jest": {

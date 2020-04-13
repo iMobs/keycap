@@ -1,11 +1,4 @@
-import {
-  registerCallback,
-  unregisterCallback,
-  reset,
-  Options,
-} from '../src/common';
-
-beforeEach(reset);
+import { registerCallback, unregisterCallback, Options } from '../src/common';
 
 describe(registerCallback, () => {
   it('calls a registered callback', () => {

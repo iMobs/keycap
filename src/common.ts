@@ -8,7 +8,7 @@ type CallbackOptions = {
 };
 
 export type Options = CallbackOptions & {
-  keys: string[];
+  keys: string | string[];
 };
 
 type InstanceMap = Map<object | KeyboardCallback, Options>;
@@ -37,6 +37,10 @@ export function reset(): void {
 }
 
 export function registerCallback({ instance, callback, keys }: Options): void {
+  if (!Array.isArray(keys)) {
+    keys = keys.split(',');
+  }
+
   keys.forEach((keyString) => {
     const key = parseString(keyString);
     let callbacks = callbackMap.get(key);
@@ -59,6 +63,10 @@ export function unregisterCallback({
   callback,
   keys,
 }: Options): void {
+  if (!Array.isArray(keys)) {
+    keys = keys.split(',');
+  }
+
   keys.forEach((keyString) => {
     const key = parseString(keyString);
     const callbacks = callbackMap.get(key);

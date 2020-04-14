@@ -3,7 +3,7 @@ import { registerCallback, unregisterCallback, Options } from '../src/common';
 describe(registerCallback, () => {
   it('calls a registered callback', () => {
     const callback = jest.fn();
-    const keys = ['a'];
+    const keys = 'a';
     registerCallback({ callback, keys });
     const event = new KeyboardEvent('keydown', {
       key: 'a',
@@ -53,7 +53,7 @@ describe(unregisterCallback, () => {
   };
 
   describe('with a callback', () =>
-    sharedTests({ callback: jest.fn(), keys: ['a'] }));
+    sharedTests({ callback: jest.fn(), keys: 'a' }));
 
   describe('with a callback and instance', () =>
     sharedTests({ instance: {}, callback: jest.fn(), keys: ['a'] }));

@@ -1,6 +1,6 @@
 {
   "name": "keycap",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Typescript Keypress Bindings for React",
   "main": "dist/index.js",
   "type": "dist/index.d.ts",
@@ -58,7 +58,9 @@
   "jest": {
     "clearMocks": true,
     "preset": "ts-jest",
-    "setupFilesAfterEnv": ["./test/setup.ts"],
+    "setupFilesAfterEnv": [
+      "./test/setup.ts"
+    ],
     "testEnvironment": "jsdom"
   }
 }

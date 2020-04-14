@@ -57,7 +57,6 @@
   },
   "jest": {
     "clearMocks": true,
-    "collectCoverage": true,
     "preset": "ts-jest",
     "setupFilesAfterEnv": ["./test/setup.ts"],
     "testEnvironment": "jsdom"

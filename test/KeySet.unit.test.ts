@@ -55,7 +55,7 @@ describe(KeySet, () => {
         shiftKey: true,
       });
 
-      const result = KeySet.matchEvent(event);
+      const result = KeySet.fromEvent(event);
       expect(result).toHaveProperty('key', 'a');
       expect(result).toHaveProperty('modifiers', ['ctrl', 'shift']);
     });

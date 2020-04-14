@@ -29,7 +29,7 @@ export class KeySet {
   private key!: string;
   private modifiers!: ModKey[];
 
-  public static matchEvent(event: KeyboardEvent): KeySet {
+  public static fromEvent(event: KeyboardEvent): KeySet {
     const { key } = event;
 
     const modifiers: ModKey[] = [];

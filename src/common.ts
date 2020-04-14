@@ -1,8 +1,13 @@
+import { parseEvent, parseString } from './keys';
+
 export type KeyboardCallback = (e: KeyboardEvent) => void;
 
-export type Options = {
+type CallbackOptions = {
   instance?: object;
   callback: KeyboardCallback;
+};
+
+export type Options = CallbackOptions & {
   keys: string[];
 };
 
@@ -12,11 +17,16 @@ const instanceMap: InstanceMap = new Map();
 
 let registered = false;
 
-function keydownListener(e: KeyboardEvent): void {
-  instanceMap.forEach(({ instance, callback, keys }) => {
-    if (keys.includes(e.key)) {
-      callback.call(instance, e);
-    }
+type CallbackMap = Map<string, Map<object | KeyboardCallback, CallbackOptions>>;
+
+const callbackMap: CallbackMap = new Map();
+
+function keydownListener(event: KeyboardEvent): void {
+  const key = parseEvent(event);
+  const callbacks = callbackMap.get(key);
+
+  callbacks?.forEach(({ instance, callback }) => {
+    callback.call(instance, event);
   });
 }
 
@@ -26,9 +36,17 @@ export function reset(): void {
   document.removeEventListener('keydown', keydownListener);
 }
 
-export function registerCallback(options: Options): void {
-  const { instance, callback } = options;
-  instanceMap.set(instance ?? callback, options);
+export function registerCallback({ instance, callback, keys }: Options): void {
+  keys.forEach((keyString) => {
+    const key = parseString(keyString);
+    let callbacks = callbackMap.get(key);
+
+    if (!callbacks) {
+      callbackMap.set(key, (callbacks = new Map()));
+    }
+
+    callbacks.set(instance ?? callback, { instance, callback });
+  });
 
   if (!registered) {
     document.addEventListener('keydown', keydownListener);
@@ -36,10 +54,27 @@ export function registerCallback(options: Options): void {
   }
 }
 
-export function unregisterCallback({ instance, callback }: Options): void {
-  instanceMap.delete(instance ?? callback);
+export function unregisterCallback({
+  instance,
+  callback,
+  keys,
+}: Options): void {
+  keys.forEach((keyString) => {
+    const key = parseString(keyString);
+    const callbacks = callbackMap.get(key);
 
-  if (!instanceMap.size) {
+    if (!callbacks) {
+      return;
+    }
+
+    callbacks.delete(instance ?? callback);
+
+    if (!callbacks.size) {
+      callbackMap.delete(key);
+    }
+  });
+
+  if (!callbackMap.size) {
     document.removeEventListener('keydown', keydownListener);
     registered = false;
   }

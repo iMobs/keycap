@@ -55,7 +55,7 @@ jobs:
           at: ~/keycap
       - run:
           name: Publish package
-          command: yarn lerna publish from-package
+          command: yarn lerna publish from-package --yes
 
 workflows:
   build-test-deploy:

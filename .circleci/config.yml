@@ -76,6 +76,6 @@ workflows:
             - test
           filters:
             tags:
-              only: /^@keycap/.*@.*/
+              only: /^v.*/
             branches:
               ignore: /.*/

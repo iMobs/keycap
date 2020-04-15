@@ -3,7 +3,7 @@
   "version": "0.0.5",
   "description": "Typescript Keypress Bindings for React",
   "main": "dist/index.js",
-  "type": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "repository": "git@github.com:iMobs/keycap.git",
   "author": "Ian Mobley <ianmobley@gmail.com>",
   "license": "MIT",

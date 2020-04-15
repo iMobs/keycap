@@ -55,7 +55,9 @@ jobs:
           at: ~/keycap
       - run:
           name: Publish package
-          command: yarn lerna publish from-package --yes
+          command: |
+            echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > .npmrc
+            yarn lerna publish from-package --yes
 
 workflows:
   build-test-deploy:

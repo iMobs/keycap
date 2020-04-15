@@ -1,6 +1,6 @@
 {
   "name": "@keycap/react",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Typescript Keypress Bindings for React",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,7 +12,7 @@
     "prepublishOnly": "tsc"
   },
   "dependencies": {
-    "@keycap/core": "^0.0.1"
+    "@keycap/core": "*"
   },
   "peerDependencies": {
     "react": "^16.13.1"

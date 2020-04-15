@@ -4,7 +4,7 @@ import {
   KeyboardCallback,
   registerCallback,
   unregisterCallback,
-} from './common';
+} from '@keycap/core';
 
 type KeyCapDecorator = (
   target: Component,

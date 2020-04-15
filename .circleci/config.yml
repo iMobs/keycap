@@ -9,13 +9,25 @@ defaults: &defaults
     name: node/default
 
 jobs:
-  test:
+  build:
     <<: *defaults
     steps:
       - checkout
       - node/with-cache:
           steps:
             - run: yarn install
+      - run:
+          name: "Build packages"
+          command: yarn build
+      - persist_to_workspace:
+          root: ~/keycap
+          paths: .
+
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/keycap
       - run:
           name: "JavaScript Linter"
           command: yarn lint --quiet --format junit -o reports/js-lint-results.xml
@@ -49,15 +61,18 @@ jobs:
           command: yarn publish
 
 workflows:
-  test-deploy:
+  build-test-deploy:
     jobs:
+      - build
       - test:
+          requires:
+            - build
           filters:
             tags:
               only: /.*/
       - deploy:
           requires:
-            - test
+            - build
           filters:
             tags:
               only: /^v.*/

@@ -1,4 +1,4 @@
-import { registerCallback, unregisterCallback, Options } from '../src/common';
+import { registerCallback, unregisterCallback, Options } from '../src/index';
 
 describe(registerCallback, () => {
   it('calls a registered callback', () => {

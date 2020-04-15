@@ -1,21 +1,15 @@
 {
-  "name": "keycap",
-  "version": "0.0.5",
+  "name": "@keycap/keycap",
   "description": "Typescript Keypress Bindings for React",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "repository": "git@github.com:iMobs/keycap.git",
   "author": "Ian Mobley <ianmobley@gmail.com>",
   "license": "MIT",
-  "private": false,
-  "files": [
-    "dist"
-  ],
+  "private": true,
+  "workspaces": ["packages/*"],
   "scripts": {
-    "build": "tsc -p tsconfig.prod.json",
-    "lint": "eslint src/** test/**",
-    "test": "jest",
-    "prepublishOnly": "yarn build"
+    "build": "lerna run build",
+    "lint": "eslint packages/**/src/** packages/**/test/**",
+    "test": "jest"
   },
   "devDependencies": {
     "@testing-library/react": "^10.0.2",
@@ -33,6 +27,7 @@
     "husky": "^4.2.3",
     "jest": "^25.3.0",
     "jest-junit": "^10.0.0",
+    "lerna": "^3.20.2",
     "lint-staged": "^10.1.2",
     "prettier": "^2.0.4",
     "react": "^16.13.1",
@@ -40,9 +35,6 @@
     "react-test-renderer": "^16.13.1",
     "ts-jest": "^25.3.1",
     "typescript": "^3.8.3"
-  },
-  "peerDependencies": {
-    "react": "^16.13.1"
   },
   "husky": {
     "hooks": {
@@ -57,9 +49,12 @@
   },
   "jest": {
     "clearMocks": true,
+    "collectCoverageFrom": [
+      "**/src/**"
+    ],
     "preset": "ts-jest",
     "setupFilesAfterEnv": [
-      "./test/setup.ts"
+      "./testSetup.ts"
     ],
     "testEnvironment": "jsdom"
   }

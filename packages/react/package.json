@@ -11,8 +11,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
-    "prepublishOnly": "tsc"
+    "build": "tsc"
   },
   "dependencies": {
     "@keycap/core": "*"

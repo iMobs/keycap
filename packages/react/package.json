@@ -12,7 +12,7 @@
     "prepublishOnly": "tsc"
   },
   "dependencies": {
-    "@keycap/core": "^0.0.1"
+    "@keycap/core": "*"
   },
   "peerDependencies": {
     "react": "^16.13.1"

@@ -55,7 +55,7 @@ jobs:
           at: ~/keycap
       - run:
           name: Publish package
-          command: yarn publish
+          command: yarn lerna publish
 
 workflows:
   build-test-deploy:
@@ -73,6 +73,7 @@ workflows:
       - deploy:
           requires:
             - build
+            - test
           filters:
             tags:
               only: /^@keycap/.*@.*/

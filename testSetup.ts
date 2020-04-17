@@ -1,3 +1,3 @@
-import { reset } from './packages/core/src';
+import { reset } from './packages/core/src/core';
 
 beforeEach(reset);

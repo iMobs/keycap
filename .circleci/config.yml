@@ -60,24 +60,28 @@ jobs:
             yarn lerna publish from-package --yes
 
 workflows:
+  build-test:
+    jobs:
+      - build:
+          filters:
+            tags:
+              ignore: /.*/
+      - test:
+          requires:
+            - build
+
   build-test-deploy:
     jobs:
       - build:
           filters:
             tags:
-              only: /.*/
+              only: /^@keycap\/.*@.*/
+            branches:
+              only: master
       - test:
           requires:
             - build
-          filters:
-            tags:
-              only: /.*/
       - deploy:
           requires:
             - build
             - test
-          filters:
-            tags:
-              only: /^@keycap\/.*@.*/
-            branches:
-              ignore: /.*/

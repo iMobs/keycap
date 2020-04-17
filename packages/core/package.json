@@ -7,6 +7,9 @@
   "repository": "git@github.com:iMobs/keycap.git",
   "author": "Ian Mobley <ianmobley@gmail.com>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "dist"
   ],

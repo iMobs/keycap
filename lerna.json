@@ -4,5 +4,9 @@
   ],
   "version": "independent",
   "npmClient": "yarn",
-  "useWorkspaces": true
+  "useWorkspaces": true,
+  "ignoreChanges": [
+    "**/test/**",
+    "**/*.md"
+  ]
 }

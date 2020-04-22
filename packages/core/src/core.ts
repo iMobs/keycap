@@ -11,10 +11,6 @@ export type Options = CallbackOptions & {
   keys: string | string[];
 };
 
-type InstanceMap = Map<object | KeyboardCallback, Options>;
-
-const instanceMap: InstanceMap = new Map();
-
 let registered = false;
 
 type CallbackMap = Map<string, Map<object | KeyboardCallback, CallbackOptions>>;
@@ -31,7 +27,7 @@ function keydownListener(event: KeyboardEvent): void {
 }
 
 export function reset(): void {
-  instanceMap.clear();
+  callbackMap.clear();
   registered = false;
   document.removeEventListener('keydown', keydownListener);
 }

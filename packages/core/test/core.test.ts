@@ -1,4 +1,4 @@
-import { registerCallback, unregisterCallback, Options } from '../src/core';
+import { registerCallback, unregisterCallback, Options } from '../src';
 
 describe(registerCallback, () => {
   it('calls a registered callback', () => {
@@ -39,7 +39,7 @@ describe(registerCallback, () => {
 });
 
 describe(unregisterCallback, () => {
-  const sharedTests = (options: Options): void => {
+  function sharedTests(options: Options): void {
     beforeEach(() => registerCallback(options));
 
     it('does not call a removed callback', () => {
@@ -50,11 +50,17 @@ describe(unregisterCallback, () => {
       document.dispatchEvent(event);
       expect(options.callback).not.toHaveBeenCalledWith(event);
     });
-  };
+  }
 
   describe('with a callback', () =>
     sharedTests({ callback: jest.fn(), keys: 'a' }));
 
   describe('with a callback and instance', () =>
     sharedTests({ instance: {}, callback: jest.fn(), keys: ['a'] }));
+
+  it('ignores something that was never registered', () => {
+    expect(() =>
+      unregisterCallback({ callback: jest.fn(), keys: 'z' })
+    ).not.toThrow();
+  });
 });

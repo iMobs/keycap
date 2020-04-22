@@ -9,13 +9,25 @@ defaults: &defaults
     name: node/default
 
 jobs:
-  test:
+  build:
     <<: *defaults
     steps:
       - checkout
       - node/with-cache:
           steps:
             - run: yarn install
+      - run:
+          name: "Build packages"
+          command: yarn build
+      - persist_to_workspace:
+          root: ~/keycap
+          paths: .
+
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/keycap
       - run:
           name: "JavaScript Linter"
           command: yarn lint --quiet --format junit -o reports/js-lint-results.xml
@@ -25,9 +37,6 @@ jobs:
             JEST_JUNIT_OUTPUT_DIR: reports
             JEST_JUNIT_OUTPUT_NAME: js-test-results.xml
           command: yarn test -i --ci --coverage --reporters="default" --reporters="jest-junit"
-      - run:
-          name: "TypeScript Check"
-          command: yarn build --noEmit
       - store_test_results:
           path: reports
       - store_artifacts:
@@ -46,20 +55,33 @@ jobs:
           at: ~/keycap
       - run:
           name: Publish package
-          command: yarn publish
+          command: |
+            echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > .npmrc
+            yarn lerna publish from-package --yes
 
 workflows:
-  test-deploy:
+  build-test:
     jobs:
-      - test:
+      - build:
           filters:
             tags:
-              only: /.*/
+              ignore: /.*/
+      - test:
+          requires:
+            - build
+
+  build-test-deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /^@keycap\/.*@.*/
+            branches:
+              only: master
+      - test:
+          requires:
+            - build
       - deploy:
           requires:
+            - build
             - test
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/

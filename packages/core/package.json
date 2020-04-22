@@ -1,0 +1,20 @@
+{
+  "name": "@keycap/core",
+  "version": "0.0.2",
+  "description": "Typescript Keypress Bindings",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": "git@github.com:iMobs/keycap.git",
+  "author": "Ian Mobley <ianmobley@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "tsc"
+  }
+}

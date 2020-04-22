@@ -1,0 +1,26 @@
+{
+  "name": "@keycap/react",
+  "version": "0.0.2",
+  "description": "Typescript Keypress Bindings for React",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": "git@github.com:iMobs/keycap.git",
+  "author": "Ian Mobley <ianmobley@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "tsc"
+  },
+  "dependencies": {
+    "@keycap/core": "^0.0.2"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1"
+  }
+}

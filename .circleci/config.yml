@@ -77,7 +77,7 @@ workflows:
             tags:
               only: /^@keycap\/.*@.*/
             branches:
-              only: master
+              ignore: /.*/
       - test:
           requires:
             - build
